@@ -1,0 +1,88 @@
+/* A Spark function to parse the commands */
+int RemoteStart(String command);
+
+/* Globals -------------------------------------------------------------------*/
+int Unlock   = D0;
+int Lock  = D2;
+int Trunk    = D4;
+int Start   = D6;
+
+
+/* This function is called once at start up ----------------------------------*/
+void setup()
+{
+  //Register Spark function
+  Spark.function("Remote Start", RemoteStart);
+
+  pinMode(Unlock, OUTPUT);
+  pinMode(Lock, OUTPUT);
+  pinMode(Trunk, OUTPUT);
+  pinMode(Start, OUTPUT);
+
+  pinMode(D7,OUTPUT);
+}
+
+/* This function loops forever --------------------------------------------*/
+void loop()
+{
+  // Nothing to do here
+}
+
+/*******************************************************************************
+ * Function Name  : rcCarControl
+ * Description    : Parses the incoming API commands and sets the motor control
+                    pins accordingly
+ * Input          : RC Car commands
+                    e.g.: rc,FORWARD
+                          rc,BACK
+ * Output         : Motor signals
+ * Return         : 1 on success and -1 on fail
+ *******************************************************************************/
+int RemoteStart(String command)
+{
+  if(command.substring(3,7) == "Unlock")
+  {
+    digitalWrite(Unlock,LOW);
+    digitalWrite(Unlock,HIGH);
+
+    return 1;
+  }
+
+  if(command.substring(3,7) == "Lock")
+  {
+    digitalWrite(Lock,LOW);
+    digitalWrite(Lock,HIGH);
+
+    return 1;
+  }
+
+  if(command.substring(3,10) == "Trunk")
+  {
+    digitalWrite(Trunk,LOW);
+    digitalWrite(Trunk,HIGH);
+
+    return 1;
+  }
+
+  if(command.substring(3,8) == "Start")
+  {
+    digitalWrite(Lock,LOW);
+    digitalWrite(Lock,HIGH);
+    delay(500);
+    digitalWrite(Start,LOW);
+    delay(2000);
+    digitalWrite(Start,HIGH);
+
+
+
+    return 1;
+  }
+
+
+
+    return 1;
+  }
+
+  // If none of the commands were executed, return false
+  return -1;
+}
