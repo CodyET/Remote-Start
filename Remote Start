@@ -14,10 +14,10 @@ void setup()
   //Register Spark function
   Spark.function("Remote Start", RemoteStart);
 
-  pinMode(Unlock, OUTPUT);
-  pinMode(Lock, OUTPUT);
-  pinMode(Trunk, OUTPUT);
-  pinMode(Start, OUTPUT);
+  pinMode(Unlock, INPUT);
+  pinMode(Lock, INPUT);
+  pinMode(Trunk, INPUT);
+  pinMode(Start, INPUT);
 
   pinMode(D7,OUTPUT);
 }
@@ -42,36 +42,44 @@ int RemoteStart(String command)
 {
   if(command.substring(3,7) == "Unlock")
   {
+    pinMode(Unlock, OUTPUT)
     digitalWrite(Unlock,LOW);
-    digitalWrite(Unlock,HIGH);
+    delay(100);
+    pinMode(Unlock, INPUT);
 
     return 1;
   }
 
   if(command.substring(3,7) == "Lock")
   {
+    pinMode(Lock, OUTPUT)
     digitalWrite(Lock,LOW);
-    digitalWrite(Lock,HIGH);
+    delay(100);
+    pinMode(Lock, INPUT);
 
     return 1;
   }
 
   if(command.substring(3,10) == "Trunk")
   {
+    pinMode(Trunk, OUTPUT)
     digitalWrite(Trunk,LOW);
-    digitalWrite(Trunk,HIGH);
+    delay(100);
+    pinMode(Trunk, INPUT);
 
     return 1;
   }
 
   if(command.substring(3,8) == "Start")
   {
+    pinMode(Lock, OUTPUT)
     digitalWrite(Lock,LOW);
-    digitalWrite(Lock,HIGH);
-    delay(500);
+    delay(100);
+    pinMode(Lock, INPUT)
+    pinMode(Start, OUTPUT)
     digitalWrite(Start,LOW);
     delay(2000);
-    digitalWrite(Start,HIGH);
+    pinMode(Start, INPUT)
 
 
 
