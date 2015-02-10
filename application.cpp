@@ -1,96 +1,124 @@
 /* A Spark function to parse the commands */
-int RemoteStart(String command);
+int remoteControl(String command);
 
 /* Globals -------------------------------------------------------------------*/
-int Unlock   = D0;
-int Lock  = D2;
-int Trunk    = D4;
-int Start   = D6;
+// Constants (for pin definitions and other things which do not change)
+const int pinUnlock = D0;
+const int pinLock = D2;
+const int pinTrunk = D4;
+const int pinStart = D6;
 
+// Desired Button Press States
+bool pressUnlock = false;
+bool pressLock = false;
+bool pressTrunk = false;
+bool pressStart = false;
+
+// Defines
+#define BUTTON_PRESS_TIME 100
 
 /* This function is called once at start up ----------------------------------*/
 void setup()
 {
-  //Register Spark function
-  Spark.function("Remote Start", RemoteStart);
+    //Register Spark function
+    Spark.function("remoteControl", remoteControl);
 
-  pinMode(Unlock, INPUT);
-  pinMode(Lock, INPUT);
-  pinMode(Trunk, INPUT);
-  pinMode(Start, INPUT);
+    // Make all the control pins outputs
+    pinMode(pinUnlock, OUTPUT);
+    pinMode(pinLock, OUTPUT);
+    pinMode(pinTrunk, OUTPUT);
+    pinMode(pinStart, OUTPUT);
 
-  pinMode(D7,OUTPUT);
+    // Set the D7 status LED to an output.
+    pinMode(D7,OUTPUT);
+
+    // Drive all the control pins high (not pressing the button)
+    digitalWrite(pinUnlock, HIGH);
+    digitalWrite(pinLock, HIGH);
+    digitalWrite(pinTrunk, HIGH);
+    digitalWrite(pinStart, HIGH);
 }
 
 /* This function loops forever --------------------------------------------*/
 void loop()
 {
-  // Nothing to do here
+    if(pressUnlock == true)
+    {
+        digitalWrite(pinUnlock,LOW);
+        delay(BUTTON_PRESS_TIME);
+        digitalWrite(pinUnlock,HIGH);
+        pressUnlock = false;
+    }
+
+    if(pressLock == true)
+    {
+        digitalWrite(pinLock,LOW);
+        delay(BUTTON_PRESS_TIME);
+        digitalWrite(pinLock,HIGH);
+        pressLock = false;
+    }
+
+    if(pressTrunk == true)
+    {
+        digitalWrite(pinTrunk,LOW);
+        delay(BUTTON_PRESS_TIME);
+        digitalWrite(pinTrunk,HIGH);
+        pressTrunk = false;
+    }
+
+    if(pressStart == true)
+    {
+        // Emulate a lock button press
+        digitalWrite(pinLock,LOW);
+        delay(BUTTON_PRESS_TIME);
+        digitalWrite(pinLock,HIGH);
+
+        // Emulate a long start button press
+        digitalWrite(pinStart,LOW);
+        delay(2000);
+        digitalWrite(pinStart,HIGH);
+
+        pressStart = false;
+    }
 }
 
 /*******************************************************************************
- * Function Name  : rcCarControl
- * Description    : Parses the incoming API commands and sets the motor control
-                    pins accordingly
- * Input          : RC Car commands
-                    e.g.: rc,FORWARD
-                          rc,BACK
- * Output         : Motor signals
+ * Function Name  : remoteControl
+ * Description    : Parses the incoming API commands and emulated button presses
+ * Input          : Remote Control commands
+                    e.g.:   UNLOCK
+                            LOCK
+                            TRUNK
+                            START
+ * Output         : Sets flags for emulated button presses
  * Return         : 1 on success and -1 on fail
  *******************************************************************************/
-int RemoteStart(String command)
+int remoteControl(String command)
 {
-  if(command.substring(3,7) == "Unlock")
-  {
-    pinMode(Unlock, OUTPUT)
-    digitalWrite(Unlock,LOW);
-    delay(100);
-    pinMode(Unlock, INPUT);
+    if(command.equals("UNLOCK") == true)
+    {
+        pressUnlock = true;
+        return 1;
+    }
 
-    return 1;
-  }
+    if(command.equals("LOCK") == true)
+    {
+        pressLock = true;
+        return 1;
+    }
 
-  if(command.substring(3,7) == "Lock")
-  {
-    pinMode(Lock, OUTPUT)
-    digitalWrite(Lock,LOW);
-    delay(100);
-    pinMode(Lock, INPUT);
+    if(command.equals("TRUNK") == true)
+    {
+        pressTrunk = true;
+        return 1;
+    }
 
-    return 1;
-  }
+    if(command.equals("START") == true)
+    {
+        pressStart = true;
+        return 1;
+    }
 
-  if(command.substring(3,10) == "Trunk")
-  {
-    pinMode(Trunk, OUTPUT)
-    digitalWrite(Trunk,LOW);
-    delay(100);
-    pinMode(Trunk, INPUT);
-
-    return 1;
-  }
-
-  if(command.substring(3,8) == "Start")
-  {
-    pinMode(Lock, OUTPUT)
-    digitalWrite(Lock,LOW);
-    delay(100);
-    pinMode(Lock, INPUT)
-    pinMode(Start, OUTPUT)
-    digitalWrite(Start,LOW);
-    delay(2000);
-    pinMode(Start, INPUT)
-
-
-
-    return 1;
-  }
-
-
-
-    return 1;
-  }
-
-  // If none of the commands were executed, return false
-  return -1;
+    // If none of the commands were executed, return false
+    return -1;
 }
