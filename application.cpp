@@ -47,6 +47,10 @@ void setup()
 /* This function loops forever --------------------------------------------*/
 void loop()
 {
+    if(Serial.print(Time.hour())==23)
+    {
+        Spark.sleep(SLEEP_MODE_DEEP,27000);
+    }
     if(pressUnlock == true)
     {
         Serial.print("Emulating unlock button... ");
