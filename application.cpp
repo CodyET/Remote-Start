@@ -42,11 +42,22 @@ void setup()
     digitalWrite(pinLock, HIGH);
     digitalWrite(pinTrunk, HIGH);
     digitalWrite(pinStart, HIGH);
+    
+    // Start the time sync & wait until it actually syncs. 
+    Spark.syncTime();
+    while(Time.year() == 1970) {  SPARK_WLAN_Loop(); }
 }
 
 /* This function loops forever --------------------------------------------*/
 void loop()
 {
+    
+    if (millis() - lastSync > ONE_DAY_MILLIS) {
+        // Request time synchronization from the Spark Cloud
+        Spark.syncTime();
+        lastSync = millis();
+      }
+  
     if(Serial.print(Time.hour())==5)
     {
         Spark.sleep(SLEEP_MODE_DEEP,27000);
