@@ -1,3 +1,5 @@
+#include "application.h"
+
 /* A Spark function to parse the commands */
 int remoteControl(String command);
 
@@ -24,7 +26,7 @@ void setup()
     Serial.begin(115200);
 
     //Register Spark function
-    Spark.function("remoteControl", remoteControl);
+    Spark.function("rc", remoteControl);
 
     // Make all the control pins outputs
     pinMode(pinUnlock, OUTPUT);
