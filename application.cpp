@@ -20,6 +20,9 @@ bool pressStart = false;
 /* This function is called once at start up ----------------------------------*/
 void setup()
 {
+    // Serial Port Debugging GO!
+    Serial.begin(115200);
+
     //Register Spark function
     Spark.function("remoteControl", remoteControl);
 
@@ -44,41 +47,50 @@ void loop()
 {
     if(pressUnlock == true)
     {
+        Serial.print("Emulating unlock button... ");
         digitalWrite(pinUnlock,LOW);
         delay(BUTTON_PRESS_TIME);
         digitalWrite(pinUnlock,HIGH);
         pressUnlock = false;
+        Serial.println("DONE");
     }
 
     if(pressLock == true)
     {
+        Serial.print("Emulating lock button... ");
         digitalWrite(pinLock,LOW);
         delay(BUTTON_PRESS_TIME);
         digitalWrite(pinLock,HIGH);
         pressLock = false;
+        Serial.println("DONE");
     }
 
     if(pressTrunk == true)
     {
+        Serial.print("Emulating lock button... ");
         digitalWrite(pinTrunk,LOW);
         delay(BUTTON_PRESS_TIME);
         digitalWrite(pinTrunk,HIGH);
         pressTrunk = false;
+        Serial.println("DONE");
     }
 
     if(pressStart == true)
     {
         // Emulate a lock button press
+        Serial.print("Emulating lock button... ");
         digitalWrite(pinLock,LOW);
         delay(BUTTON_PRESS_TIME);
         digitalWrite(pinLock,HIGH);
-
+        Serial.println("DONE");
+        
         // Emulate a long start button press
+        Serial.print("Emulating start button... ");
         digitalWrite(pinStart,LOW);
         delay(2000);
         digitalWrite(pinStart,HIGH);
-
         pressStart = false;
+        Serial.println("DONE");
     }
 }
 
