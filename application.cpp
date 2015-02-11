@@ -42,6 +42,11 @@ void setup()
     digitalWrite(pinLock, HIGH);
     digitalWrite(pinTrunk, HIGH);
     digitalWrite(pinStart, HIGH);
+    
+    // Start the time sync & wait until it actually syncs. 
+    Spark.syncTime();
+    while(Time.year() == 1970) {  SPARK_WLAN_Loop(); }
+    lastSync = millis();
 }
 
 /* This function loops forever --------------------------------------------*/
