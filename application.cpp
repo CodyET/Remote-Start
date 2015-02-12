@@ -9,7 +9,7 @@ const int pinUnlock = D0;
 const int pinLock = D2;
 const int pinTrunk = D4;
 const int pinStart = D6;
-const int pinLed = D7
+const int pinLed = D7;
 
 // Desired Button Press States
 bool pressUnlock = false;
