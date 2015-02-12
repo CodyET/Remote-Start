@@ -9,15 +9,17 @@ const int pinUnlock = D0;
 const int pinLock = D2;
 const int pinTrunk = D4;
 const int pinStart = D6;
+const int pinLed = D7
 
 // Desired Button Press States
 bool pressUnlock = false;
 bool pressLock = false;
 bool pressTrunk = false;
 bool pressStart = false;
+bool pressLed = false;
 
 // Defines
-#define BUTTON_PRESS_TIME 100
+#define BUTTON_PRESS_TIME 300
 
 /* This function is called once at start up ----------------------------------*/
 void setup()
@@ -42,6 +44,7 @@ void setup()
     digitalWrite(pinLock, HIGH);
     digitalWrite(pinTrunk, HIGH);
     digitalWrite(pinStart, HIGH);
+    digitalWrite(pinLed, LOW);
     
     // Start the time sync & wait until it actually syncs. 
     Spark.syncTime();
@@ -59,8 +62,10 @@ void loop()
     {
         Serial.print("Emulating unlock button... ");
         digitalWrite(pinUnlock,LOW);
+        digitalWrite(pinLed,HIGH);
         delay(BUTTON_PRESS_TIME);
         digitalWrite(pinUnlock,HIGH);
+        digitalWrite(pinLed,LOW);
         pressUnlock = false;
         Serial.println("DONE");
     }
@@ -69,8 +74,10 @@ void loop()
     {
         Serial.print("Emulating lock button... ");
         digitalWrite(pinLock,LOW);
+        digitalWrite(pinLed,HIGH);
         delay(BUTTON_PRESS_TIME);
         digitalWrite(pinLock,HIGH);
+        digitalWrite(pinLed,LOW);
         pressLock = false;
         Serial.println("DONE");
     }
@@ -79,8 +86,10 @@ void loop()
     {
         Serial.print("Emulating lock button... ");
         digitalWrite(pinTrunk,LOW);
+        digitalWrite(pinLed,HIGH);
         delay(BUTTON_PRESS_TIME);
         digitalWrite(pinTrunk,HIGH);
+        digitalWrite(pinLed,LOW);
         pressTrunk = false;
         Serial.println("DONE");
     }
@@ -90,15 +99,20 @@ void loop()
         // Emulate a lock button press
         Serial.print("Emulating lock button... ");
         digitalWrite(pinLock,LOW);
+        digitalWrite(pinLed,HIGH);
         delay(BUTTON_PRESS_TIME);
         digitalWrite(pinLock,HIGH);
+        digitalWrite(pinLed,LOW);
+        delay(200);
         Serial.println("DONE");
         
         // Emulate a long start button press
         Serial.print("Emulating start button... ");
         digitalWrite(pinStart,LOW);
+        digitalWrite(pinLed,HIGH);
         delay(2000);
         digitalWrite(pinStart,HIGH);
+        digitalWrite(pinLed,LOW);
         pressStart = false;
         Serial.println("DONE");
     }
