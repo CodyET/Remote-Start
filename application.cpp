@@ -55,7 +55,7 @@ void setup()
 void loop()
 {
     //Go to sleep at 11:00PM CST till 6:30AM
-    if(Serial.print(Time.hour()) == 5)
+    if(Time.hour() == 5)
     {
         Spark.sleep(SLEEP_MODE_DEEP,27000);
     }
