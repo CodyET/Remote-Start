@@ -46,7 +46,6 @@ void setup()
     // Start the time sync & wait until it actually syncs. 
     Spark.syncTime();
     while(Time.year() == 1970) {  SPARK_WLAN_Loop(); }
-    lastSync = millis();
 }
 
 /* This function loops forever --------------------------------------------*/
