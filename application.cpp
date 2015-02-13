@@ -10,6 +10,7 @@ const int pinLock = D2;
 const int pinTrunk = D4;
 const int pinStart = D6;
 const int pinLed = D7;
+const int pinEng = D6;
 
 // Desired Button Press States
 bool pressUnlock = false;
@@ -17,6 +18,7 @@ bool pressLock = false;
 bool pressTrunk = false;
 bool pressStart = false;
 bool pressLed = false;
+bool pressEng = false;
 
 // Defines
 #define BUTTON_PRESS_TIME 300
@@ -35,6 +37,7 @@ void setup()
     pinMode(pinLock, OUTPUT);
     pinMode(pinTrunk, OUTPUT);
     pinMode(pinStart, OUTPUT);
+    pinMode(pinEng, OUTPUT);
 
     // Set the D7 status LED to an output.
     pinMode(D7,OUTPUT);
@@ -118,7 +121,7 @@ void loop()
         Serial.println("DONE");
     }
     
-    if(pressStopEng == true)
+    if(pressEng == true)
     {
         Serial.print("Emulating Start button... ");
         digitalWrite(pinStart,LOW);
@@ -126,7 +129,7 @@ void loop()
         delay(BUTTON_PRESS_TIME);
         digitalWrite(pinStart,HIGH);
         digitalWrite(pinLed,LOW);
-        pressStopEng = false;
+        pressEng = false;
         Serial.println("DONE");
     }
 }
@@ -168,9 +171,9 @@ int remoteControl(String command)
         return 1;
     }
     
-    if(command.equals("STOPENG") == true)
+    if(command.equals("ENG") == true)
     {
-        pressStopEng = true;
+        pressEng = true;
         return 1;
     }
     
