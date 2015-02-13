@@ -117,6 +117,18 @@ void loop()
         pressStart = false;
         Serial.println("DONE");
     }
+    
+    if(pressStopEng == true)
+    {
+        Serial.print("Emulating Start button... ");
+        digitalWrite(pinStart,LOW);
+        digitalWrite(pinLed,HIGH);
+        delay(BUTTON_PRESS_TIME);
+        digitalWrite(pinStart,HIGH);
+        digitalWrite(pinLed,LOW);
+        pressStopEng = false;
+        Serial.println("DONE");
+    }
 }
 
 /*******************************************************************************
@@ -155,7 +167,13 @@ int remoteControl(String command)
         pressStart = true;
         return 1;
     }
-
+    
+    if(command.equals("STOPENG") == true)
+    {
+        pressStopEng = true;
+        return 1;
+    }
+    
     // If none of the commands were executed, return false
     return -1;
 }
