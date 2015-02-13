@@ -11,6 +11,13 @@ const int pinTrunk = D4;
 const int pinStart = D6;
 const int pinLed = D7;
 const int pinEng = D6;
+const int pinSlptwo = D1;
+const int pinSlpfour = D1;
+const int pinSlpeight = D1;
+const int pinSlptwlv = D1;
+const int pinSlp1day = D1;
+const int pinSlp2day = D1;
+const int pinSlp3day = D1;
 
 // Desired Button Press States
 bool pressUnlock = false;
@@ -19,6 +26,13 @@ bool pressTrunk = false;
 bool pressStart = false;
 bool pressLed = false;
 bool pressEng = false;
+bool pressSlptwo = false;
+bool pressSlpfour = false;
+bool pressSlpeight = false;
+bool pressSlptwlv = false;
+bool pressSlp1day = false;
+bool pressSlp2day = false;
+bool pressSlp3day = false;
 
 // Defines
 #define BUTTON_PRESS_TIME 300
@@ -38,6 +52,13 @@ void setup()
     pinMode(pinTrunk, OUTPUT);
     pinMode(pinStart, OUTPUT);
     pinMode(pinEng, OUTPUT);
+    pinMode(pinSlptwo, OUTPUT);
+    pinMode(pinSlpfour, OUTPUT);
+    pinMode(pinSlpeight, OUTPUT);
+    pinMode(pinSlptwlv, OUTPUT);
+    pinMode(pinSlp1day, OUTPUT);
+    pinMode(pinSlp2day, OUTPUT);
+    pinMode(pinSlp3day, OUTPUT);
 
     // Set the D7 status LED to an output.
     pinMode(D7,OUTPUT);
@@ -48,6 +69,13 @@ void setup()
     digitalWrite(pinTrunk, HIGH);
     digitalWrite(pinStart, HIGH);
     digitalWrite(pinLed, LOW);
+    digitalWrite(pinSlptwo, LOW);
+    digitalWrite(pinSlpfour, LOW);
+    digitalWrite(pinSlpeight, LOW);
+    digitalWrite(pinSlptwlv, LOW);
+    digitalWrite(pinSlp1day, LOW);
+    digitalWrite(pinSlp2day, LOW);
+    digitalWrite(pinSlp3day, LOW);
     
     // Start the time sync & wait until it actually syncs. 
     Spark.syncTime();
@@ -132,6 +160,41 @@ void loop()
         pressEng = false;
         Serial.println("DONE");
     }
+    
+    if(pressSlptwo == true)
+    {
+        Spark.sleep(SLEEP_MODE_DEEP,7200);
+    }
+        
+    if(pressSlpfour == true)
+    {
+        Spark.sleep(SLEEP_MODE_DEEP,14400);
+    }
+        
+    if(pressSlpeight == true)
+    {
+        Spark.sleep(SLEEP_MODE_DEEP,28800);
+    }
+        
+    if(pressSlptwlv == true)
+    {
+        Spark.sleep(SLEEP_MODE_DEEP,43200);
+    }
+       
+    if(pressSlp1day == true)
+    {
+        Spark.sleep(SLEEP_MODE_DEEP,86400);
+    }
+       
+    if(pressSlp2day == true)
+    {
+        Spark.sleep(SLEEP_MODE_DEEP,172800);
+    }
+       
+    if(pressSlp3day == true)
+    {
+        Spark.sleep(SLEEP_MODE_DEEP,259200);
+    }
 }
 
 /*******************************************************************************
@@ -174,6 +237,48 @@ int remoteControl(String command)
     if(command.equals("ENG") == true)
     {
         pressEng = true;
+        return 1;
+    }
+    
+    if(command.equals("SLPTWO") == true)
+    {
+        pressSlptwo = true;
+        return 1;
+    }
+    
+    if(command.equals("SLPFOUR") == true)
+    {
+        pressSlpfour = true;
+        return 1;
+    }
+    
+    if(command.equals("SLPEIGHT") == true)
+    {
+        pressSlpeight = true;
+        return 1;
+    }
+    
+    if(command.equals("SLPTWLV") == true)
+    {
+        pressSlptwlv = true;
+        return 1;
+    }
+    
+    if(command.equals("SLP1DAY") == true)
+    {
+        pressSlp1day = true;
+        return 1;
+    }
+    
+    if(command.equals("SLP2DAY") == true)
+    {
+        pressSlp2day = true;
+        return 1;
+    }
+    
+    if(command.equals("SLP3DAY") == true)
+    {
+        pressSlp3day = true;
         return 1;
     }
     
